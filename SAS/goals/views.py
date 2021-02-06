@@ -11,8 +11,8 @@ from .inspirationalQuotes import quotes
 
 # Create your views here.
 def index(request):
-    randomQuote = random.choice(quotes)
-    context_dict = {'quote': randomQuote, }
+    random_quote = random.choice(quotes)
+    context_dict = {'quote_dict': random_quote, }
 
     try:
         context_dict['profile'] = UserProfile.objects.get(user=request.user)

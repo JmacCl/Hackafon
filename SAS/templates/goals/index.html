@@ -10,12 +10,12 @@
 		{% if user.is_authenticated %}
       <h2 class="font-bold text-3xl py-4">Welcome {{ user.username }}!</h2>
       <p>Hello there {{ user.username }}, you are currently at level {{ profile.xpLevel }}!</p>
-			<img src="{{MEDIA_URL}}profile_images/bananana.jpg" width="300" height="500" alt="Profile picture" />
+			<img src="{{MEDIA_URL}}{{ profile.picture.name }}" width="300" height="500" alt="Profile picture" />
 		{% else %}
       <h1>Achieve Your Goals!</h1>
       <p>This is a website to help you achieve your lockdown goals.</p>
       <p>Register to get started! </p>
       <p>We hope you enjoy the website </p>
 		{% endif %}
-      <p><strong>Inspirational quote:</strong> {{ quote.quote }} {{ quote.author }}</p>
+      <p><strong>Inspirational quote:</strong> {{ quote_dict.quote }} {{ quote_dict.author }}</p>
 {% endblock %}
