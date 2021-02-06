@@ -6,22 +6,20 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import random
-from inspirationalQuotes import quotes
+from .inspirationalQuotes import quotes
+
 
 # Create your views here.
 def index(request):
-    context_dict = {randomQuote,}
+    randomQuote = random.choice(quotes)
+    context_dict = {'quote': randomQuote, }
 
     try:
-        context_dict['profile']=UserProfile.objects.get(user=request.user)
+        context_dict['profile'] = UserProfile.objects.get(user=request.user)
     except:
-        context_dict['profile']="ono"
+        context_dict['profile'] = None
 
     return render(request, 'goals/index.html', context=context_dict)
-
-# For Inspirational quotes:
-
-randomQuote = random.choice(quotes)
 
 
 def register(request):
@@ -39,7 +37,6 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
 
-
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
 
@@ -52,7 +49,8 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render(request, 'goals/register.html', context = {'user_form':user_form, 'profile_form': profile_form, 'registered': registered})
+    return render(request, 'goals/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -68,16 +66,18 @@ def user_login(request):
             else:
                 return HttpResponse("Invalid login details supplied.")
         else:
-             print('invalid')
-             return HttpResponse("Invalid login details supplied.")
+            print('invalid')
+            return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'goals/login.html')
+
 
 @login_required
 def user_logout(request):
     logout(request)
     return redirect(reverse('goals:index'))
-    
+
+
 def addGoal(request):
     if request.method == 'POST':
         addGoal_form = GoalForm(request.POST)
@@ -89,5 +89,5 @@ def addGoal(request):
             return HttpResponse("Missing Information")
     else:
         addGoal_form = GoalForm()
-        
-    return render(request, 'goals/addGoal.html', context = {'addGoal_form': addGoal_form})
+
+    return render(request, 'goals/addGoal.html', context={'addGoal_form': addGoal_form})
