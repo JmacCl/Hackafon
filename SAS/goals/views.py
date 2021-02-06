@@ -5,10 +5,12 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+import random
+from inspirationalQuotes import quotes
 
 # Create your views here.
 def index(request):
-    context_dict = {}
+    context_dict = {randomQuote,}
 
     try:
         context_dict['profile']=UserProfile.objects.get(user=request.user)
@@ -16,6 +18,11 @@ def index(request):
         context_dict['profile']="ono"
 
     return render(request, 'goals/index.html', context=context_dict)
+
+# For Inspirational quotes:
+
+randomQuote = random.choice(quotes)
+
 
 def register(request):
     registered = False
