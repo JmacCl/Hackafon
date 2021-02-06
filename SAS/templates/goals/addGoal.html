@@ -3,33 +3,32 @@
 {% load static %} 
 
 {% block title_block %}
-	Register 
+	Add a Goal
 {% endblock %} 
 
 {% block body_block %}
-	<h2 class="font-bold text-3xl py-4">Register for Goals</h2>
-	{% if registered %}
-		<h3 class="text-xl py-4">You are Already Registered!</h3>
+	<h2 class="font-bold text-3xl py-4">Add a Goal</h2>
+	
+		
 
 		<a href="{% url 'goals:index' %}">Return to the homepage.</a>
-	{% else %}
+	
 		<form
-			id="user_form"
+			id="addGoal_form"
 			method="post"
-			action="{% url 'goals:index' %}"
+			action="{% url 'goals:addGoal' %}"
 			enctype="multipart/form-data"
 			class="auto-form"
 		>
 			{% csrf_token %} 
-			{{ user_form.as_p }} 
-			{{ profile_form.as_p }}
+			{{ addGoal_form.as_p }} 
+			
 			<button
 				type="submit"
 				class="bg-gray-800 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-md mt-6"
 			>
-				Register
+				Add
 			</button>
 		</form>
-	{% endif %} 
+	
 {% endblock %}
-

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from goals.forms import UserForm, UserProfileForm
+from goals.forms import UserForm, UserProfileForm, GoalForm
 from goals.models import UserProfile
 from django.http import HttpResponse
 from django.urls import reverse
@@ -70,3 +70,17 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('goals:index'))
+    
+def addGoal(request):
+    if request.method == 'POST':
+        addGoal_form = GoalForm(request.POST)
+        if addGoal_form.is_valid():
+            goal = addGoal_form.save(commit=False)
+            goal.user = request.user
+            goal.save()
+        else:
+            return HttpResponse("Missing Information")
+    else:
+        addGoal_form = GoalForm()
+        
+    return render(request, 'goals/addGoal.html', context = {'addGoal_form': addGoal_form})
