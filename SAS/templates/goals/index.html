@@ -7,17 +7,15 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>See Below!</h1>
-	<div>
 		{% if user.is_authenticated %}
-			Welcome {{ user.username }}!
+      <h2 class="font-bold text-3xl py-4">Welcome {{ user.username }}!</h2>
+      <p>Hello there {{ user.username }}, you are currently at level {{ profile.xpLevel }}!</p>
 			<img src="{{MEDIA_URL}}profile_images/bananana.jpg" width="300" height="500" alt="Profile picture" />
 		{% else %}
-			This is a website to help you achieve your lockdown goals.<br />
-			Register to get started! <br />
-			We hope you enjoy the website
+      <h1>Achieve Your Goals!</h1>
+      <p>This is a website to help you achieve your lockdown goals.</p>
+      <p>Register to get started! </p>
+      <p>We hope you enjoy the website </p>
 		{% endif %}
-		<br />
-		<strong>{{ boldmessage }}</strong><br />
-	</div>
+      <p><strong>Inspirational quote:</strong> {{ randomQuote }}</p>
 {% endblock %}

@@ -9,4 +9,8 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class Goal(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    description = models.CharField(max_length=128)
 # Create your models here.
