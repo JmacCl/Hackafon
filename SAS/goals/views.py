@@ -1,12 +1,21 @@
 from django.shortcuts import render, redirect
 from goals.forms import UserForm, UserProfileForm
+from goals.models import UserProfile
 from django.http import HttpResponse
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def index(request):
-    context_dict = {'boldmessage':'EXAMPLE'}
+    
+    context_dict = {'boldmessage':'EXAMPLE' }
+    
+    try:
+        context_dict['profile']=UserProfile.objects.get(user=request.user)
+    except:
+        context_dict['profile']="ono"
+    
     return render(request, 'goals/index.html', context=context_dict)
     
 def register(request):
@@ -23,6 +32,7 @@ def register(request):
             
             profile = profile_form.save(commit=False)
             profile.user = user
+            
             
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
@@ -50,8 +60,14 @@ def user_login(request):
                 login(request, user)
                 return redirect(reverse('goals:index'))
             else:
-                print('invalid')
                 return HttpResponse("Invalid login details supplied.")
-            
+        else:
+             print('invalid')
+             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'goals/login.html')
+        
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('goals:index'))
