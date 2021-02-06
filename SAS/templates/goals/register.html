@@ -1,22 +1,24 @@
-{% extends 'goals/base.html' %}
-{% load static %}
+{% extends 'goals/base.html' %} {% load static %} {% block title_block %}
+Register {% endblock %} {% block body_block %}
+<h2 class="font-bold text-3xl py-4">Register</h2>
 
-{% block title_block %}
-	Register
-{% endblock %}
+{% if registered %} Rango says: <strong>thank you for registering!</strong>
+<a href="{% url 'goals:index' %}">Return to the homepage.</a><br />
+{% else %}
+<form
+  id="user_form"
+  method="post"
+  action="{% url 'goals:register' %}"
+  enctype="multipart/form-data"
+  class="auto-form"
+>
+  {% csrf_token %} {{ user_form.as_p }} {{ profile_form.as_p }}
 
-{% block body_block %}
-	<h1>Register for Rango</h1>
-	{% if registered %}
-		Rango says: <strong>thank you for registering!</strong>
-		<a href="{% url 'goals:index' %}">Return to the homepage.</a><br />
-	{% else %}
-		Rango says: <strong>register here!</strong><br />
-		<form id="user_form" method="post" action="{% url 'goals:register' %}" enctype="multipart/form-data">
-			{% csrf_token %}
-			{{ user_form.as_p }}
-			{{ profile_form.as_p }}
-			<input type="submit" name="submit" value="Register" />
-		</form>
-	{% endif %}
-{% endblock %}
+  <button
+    type="submit"
+    class="bg-gray-800 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-md mt-6"
+  >
+    Register
+  </button>
+</form>
+{% endif %} {% endblock %}

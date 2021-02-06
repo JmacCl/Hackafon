@@ -1,34 +1,47 @@
 <!DOCTYPE html>
-
 {% load static %}
-
-
-<html>
-	<head lang="en">
-		<meta charset="UTF-8" />
-		<title>
-			Rango - 
-			{% block title_block %}
-				How to Tango with Django!
-			{% endblock %}
-		</title>
-	</head>
-	
-	<body>
-		<div>
-		{% block body_block %}
-			This is body_block's default content.
-		{% endblock %}
-		</div>
-		
-		<hr />
-		<div>
-			<ul>
-				<li><a href="{% url 'goals:logout' %}">Logout</a></li>
-				<li><a href="{% url 'goals:register' %}">Sign Up</a></li>
-				<li><a href="{% url 'goals:login' %}">Login</a></li>
-				<li><a href="{% url 'goals:index' %}">Index</a></li>
-			</ul>
-		</div>
-	</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Goals - {% block title_block %} Achieve Your Goals! {% endblock %}
+    </title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <link rel="stylesheet" href="/static/styles/index.css" />
+  </head>
+  <body class="bg-gray-900 text-gray-100">
+    <header class="text-center">
+      <h1
+        class="bg-clip-text bg-gradient-to-r font-black from-gray-100 py-8 text-3xl text-5xl text-transparent to-gray-300"
+      >
+        Goals
+      </h1>
+      <nav>
+        <a
+          href="{% url 'goals:index' %}"
+          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md mx-2"
+          >Home</a
+        >
+        <a
+          href="{% url 'goals:register' %}"
+          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md mx-2"
+          >Sign Up</a
+        >
+        <a
+          href="{% url 'goals:login' %}"
+          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md mx-2"
+          >Login</a
+        >
+      </nav>
+    </header>
+    <main class="max-w-screen-lg mx-auto p-6">
+      {% block body_block %} {% endblock %}
+    </main>
+  </body>
 </html>

@@ -1,18 +1,39 @@
-{% extends 'goals/base.html' %}
-{% load static %}
+{% extends 'goals/base.html' %} 
 
-{% block title_block %}
+{% load static %} 
+
+{% block title_block %} 
 	Login
-{% endblock %}
-
+{% endblock %} 
 {% block body_block %}
-	<h1>Login to Rango</h1>
+	<h2 class="font-bold text-3xl py-4">Login</h2>
 	<form id="login_form" method="post" action="{% url 'goals:login' %}">
 		{% csrf_token %}
-		Username: <input type="text" name="username" value="" size="50" />
-		<br />
-		Password: <input type="password" name="password" value="" size="50" />
-		<br />
-		<input type="submit" value="submit" />
+
+		<label for="username" class="mt-4 text-sm">Username:</label>
+		<input
+			id="username"
+			type="text"
+			name="username"
+			value=""
+			size="50"
+			class="block rounded-md p-2 border border-transparent bg-gray-800 focus:border-gray-200 my-1 w-full"
+		/>
+
+		<label for="password" class="mt-4 text-sm block">Password:</label>
+		<input
+			id="password"
+			type="password"
+			name="password"
+			value=""
+			class="block rounded-md p-2 border border-transparent bg-gray-800 focus:border-gray-200 my-1 w-full"
+		/>
+
+		<button
+			type="submit"
+			class="bg-gray-800 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-md mt-6"
+		>
+			Login
+		</button>
 	</form>
 {% endblock %}
