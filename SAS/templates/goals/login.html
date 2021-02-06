@@ -6,7 +6,7 @@
 	Login
 {% endblock %} 
 {% block body_block %}
-	<h2 class="font-bold text-3xl py-4">Login</h2>
+	<h2 class="font-bold text-3xl py-4">Login to Goals!</h2>
 	<form id="login_form" method="post" action="{% url 'goals:login' %}">
 		{% csrf_token %}
 

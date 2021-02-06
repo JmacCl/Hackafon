@@ -7,5 +7,13 @@
 {% endblock %}
 
 {% block body_block %}
-  <h2 class="font-bold text-4xl">Meet Your Goals</h2>
+  <h2 class="font-bold text-3xl py-4">Look at your Goals!</h2>
+	<div>
+		{% if user.is_authenticated %}
+			<p>Hello there! {{ user.username }} you have level {{ profile.xpLevel }}!!</p>
+		{% else %}
+			<p>Hello</p>
+		{% endif %}
+		<br />
+	</div>
 {% endblock %}
