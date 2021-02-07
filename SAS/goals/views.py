@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 import random
 from .inspirationalQuotes import quotes
 
+from django.http import JsonResponse
+
 
 def index(request):
     random_quote = random.choice(quotes)
@@ -104,3 +106,14 @@ def attempt_login(request, username, password):
         return True
 
     return False
+
+def statistics(request):
+    return HttpResponse("Stats page is under development")
+
+#Ignore, this is graph testing
+def get_data(request, *args, **kwargs):
+    data={
+        "sales":100,
+        "customers":10,
+    }
+    return JsonResponse(data) #http response

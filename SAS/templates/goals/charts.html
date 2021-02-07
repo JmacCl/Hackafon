@@ -1,0 +1,29 @@
+{% extends 'goals/base.html' %}
+
+<script>
+{% block jquery %}
+var endpoint = 'goals/api/data/'
+
+$.ajax({
+	method: "GET",
+	url: endpoint,
+	success: function(data){
+		console.log(data)
+	},
+	error: function(error_data){
+		console.log("error")
+		console.log(data)
+	}
+})
+{% endblock %}
+</script>
+
+{% block content %}
+
+<div class='row'>
+	<div class='col-sm-12'>
+		<h1>Hello World</h1>
+	<div>
+</div>
+
+{% endblock content %}

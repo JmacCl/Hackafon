@@ -9,4 +9,8 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     path('add_goal/', views.add_goal, name='add_goal'),
+    path('statistics/', views.statistics, name='statistics'),
+
+    #Ignore, this is graph testing
+    path('api/data/', views.get_data, name='api_data'),
 ]

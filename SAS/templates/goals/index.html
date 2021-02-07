@@ -19,7 +19,7 @@
                     {% if not goal.completed %}
                         <li>
                             <input id="checkbox{{ goal.pk }}" type="checkbox" name="checkbox:{{ goal.pk }}" value={{ goal.completed }} onChange="this.form.submit()">
-                            <label for="checkbox{{ goal.pk }}">{{ goal.description }} Complete By: {{ goal.date }}</label>
+                            <label for="checkbox{{ goal.pk }}">{{ goal.description }} Complete By: {{ goal.date }} XP worth: {{goal.xpAmount}}</label>
                         </li>
                     {% endif %}
                 {% endfor %}

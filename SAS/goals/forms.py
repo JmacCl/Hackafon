@@ -22,4 +22,4 @@ class GoalForm(forms.ModelForm):
 
     class Meta:
         model = UserGoal
-        fields = ('description', 'date',)
+        fields = ('description', 'date', 'xpAmount', )

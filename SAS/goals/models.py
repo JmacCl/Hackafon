@@ -17,3 +17,4 @@ class UserGoal(models.Model):
     date = models.DateField()
     description = models.CharField(max_length=128)
     completed = models.BooleanField(default=False)
+    xpAmount = models.IntegerField(default=10)
