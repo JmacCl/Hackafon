@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from goals.forms import UserForm, UserProfileForm, GoalForm
 from goals.models import UserProfile, UserGoal
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -22,10 +22,18 @@ def index(request):
                 goal = UserGoal.objects.get(pk=pk_name)
                 goal.completed = True
                 goal.save()
+                profile = UserProfile.objects.get(user=goal.user)
+                new_level, new_xp = increase_level(profile.level, profile.xp_level, 1)
+                print(new_level, new_xp)
+                profile.level = new_level
+                profile.xp_level = new_xp
+                profile.save()
 
     try:
-        context_dict['profile'] = UserProfile.objects.get(user=request.user)
+        profile = UserProfile.objects.get(user=request.user)
+        context_dict['profile'] = profile
         context_dict['goals'] = UserGoal.objects.filter(user=request.user).order_by('date')
+        context_dict['xp_to_next_level'] = xp_to_next(profile.level)
     except:
         context_dict['profile'] = None
 
@@ -85,18 +93,21 @@ def user_logout(request):
 
 
 def add_goal(request):
+    added = False
     if request.method == 'POST':
         add_goal_form = GoalForm(request.POST)
         if add_goal_form.is_valid():
             goal = add_goal_form.save(commit=False)
             goal.user = request.user
             goal.save()
+            added = True
+           
+            #return redirect(reverse('goals:add_goal'))
         else:
             return HttpResponse("Missing Information")
-    else:
-        add_goal_form = GoalForm()
+    add_goal_form = GoalForm()
 
-    return render(request, 'goals/add_goal.html', context={'add_goal_form': add_goal_form})
+    return render(request, 'goals/add_goal.html', context={'add_goal_form': add_goal_form, 'added': added})
 
 
 def attempt_login(request, username, password):
@@ -107,6 +118,22 @@ def attempt_login(request, username, password):
 
     return False
 
+
+
+def xp_to_next(level):
+    return level * 2
+
+
+def increase_level(level, xp, add_xp=0):
+    thresh = xp_to_next(level)
+    total_xp = xp + add_xp
+    if total_xp > thresh:
+        return increase_level(level + 1, total_xp - thresh)
+    elif total_xp == thresh:
+        return level + 1, 0
+
+    return level, total_xp
+  
 def statistics(request):
     return HttpResponse("Stats page is under development")
 
