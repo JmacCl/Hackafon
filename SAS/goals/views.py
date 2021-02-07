@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from goals.forms import UserForm, UserProfileForm, GoalForm
 from goals.models import UserProfile, UserGoal
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -85,18 +85,21 @@ def user_logout(request):
 
 
 def add_goal(request):
+    added = False
     if request.method == 'POST':
         add_goal_form = GoalForm(request.POST)
         if add_goal_form.is_valid():
             goal = add_goal_form.save(commit=False)
             goal.user = request.user
             goal.save()
+            added = True
+           
+            #return redirect(reverse('goals:add_goal'))
         else:
             return HttpResponse("Missing Information")
-    else:
-        add_goal_form = GoalForm()
+    add_goal_form = GoalForm()
 
-    return render(request, 'goals/add_goal.html', context={'add_goal_form': add_goal_form})
+    return render(request, 'goals/add_goal.html', context={'add_goal_form': add_goal_form, 'added': added})
 
 
 def attempt_login(request, username, password):
