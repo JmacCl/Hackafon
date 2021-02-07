@@ -85,11 +85,10 @@ def add_goal(request):
     else:
         add_goal_form = GoalForm()
 
-    return render(request, 'goals/addGoal.html', context={'addGoal_form': add_goal_form})
+    return render(request, 'goals/add_goal.html', context={'add_goal_form': add_goal_form})
 
 
 def attempt_login(request, username, password):
-    print(username, password)
     user_auth = authenticate(username=username, password=password)
     if user_auth and user_auth.is_active:
         login(request, user_auth)
