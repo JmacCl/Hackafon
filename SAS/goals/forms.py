@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from goals.models import UserProfile, Goal
+from goals.models import UserProfile, UserGoal
 
 
 class UserForm(forms.ModelForm):
@@ -21,5 +21,5 @@ class GoalForm(forms.ModelForm):
     date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
 
     class Meta:
-        model = Goal
+        model = UserGoal
         fields = ('description', 'date',)
