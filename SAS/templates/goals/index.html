@@ -3,19 +3,33 @@
 {% load static %}
 
 {% block title_block %}
-	Homepage
+    Homepage
 {% endblock %}
 
 {% block body_block %}
-		{% if user.is_authenticated %}
-      <h2 class="font-bold text-3xl py-4">Welcome {{ user.username }}!</h2>
-      <p>Hello there {{ user.username }}, you are currently at level {{ profile.xpLevel }}!</p>
-			<img src="{{MEDIA_URL}}profile_images/bananana.jpg" width="300" height="500" alt="Profile picture" />
-		{% else %}
-      <h1>Achieve Your Goals!</h1>
-      <p>This is a website to help you achieve your lockdown goals.</p>
-      <p>Register to get started! </p>
-      <p>We hope you enjoy the website </p>
-		{% endif %}
-      <p><strong>Inspirational quote:</strong> {{ quote.quote }} {{ quote.author }}</p>
+    {% if user.is_authenticated %}
+        <h2 class="font-bold text-3xl py-4">Welcome {{ user.username }}!</h2>
+        <p><strong>Inspirational quote:</strong> {{ quote_dict.quote }} {{ quote_dict.author }}</p>
+        <p>Hello there {{ user.username }}, you are currently at level {{ profile.xpLevel }}!</p>
+        <img src="{{ MEDIA_URL }}{{ profile.picture.name }}" width="300" height="500" alt="Profile picture"/>
+        <form id="goals_form" method="post" action="{% url 'goals:index' %}">
+            {% csrf_token %}
+            <ul>
+                {% for goal in goals %}
+                    {% if not goal.completed %}
+                        <li>
+                            <input id="checkbox{{ goal.pk }}" type="checkbox" name="checkbox:{{ goal.pk }}" value={{ goal.completed }} onChange="this.form.submit()">
+                            <label for="checkbox{{ goal.pk }}">{{ goal.description }} Complete By: {{ goal.date }} XP worth: {{goal.xpAmount}}</label>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </form>
+    {% else %}
+        <h1>Achieve Your Goals!</h1>
+        <p>This is a website to help you achieve your lockdown goals.</p>
+        <p>Register to get started! </p>
+        <p>We hope you enjoy the website </p>
+        <p><strong>Inspirational quote:</strong> {{ quote_dict.quote }} {{ quote_dict.author }}</p>
+    {% endif %}
 {% endblock %}

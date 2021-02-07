@@ -30,10 +30,18 @@
         >
         {% if user.is_authenticated %}
         <a
-          href="{% url 'goals:addGoal' %}"
+          href="{% url 'goals:add_goal' %}"
           class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md mx-2"
           >Add a Goal</a
         >
+		
+		<a
+          href="{% url 'goals:statistics' %}"
+          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md mx-2"
+          >Statistics</a
+        >
+        
+		
         <a
           href="{% url 'goals:logout' %}"
           class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md mx-2"

@@ -8,20 +8,16 @@
 
 {% block body_block %}
 	<h2 class="font-bold text-3xl py-4">Add a Goal</h2>
-	
-		
 
-		<a href="{% url 'goals:index' %}">Return to the homepage.</a>
-	
 		<form
-			id="addGoal_form"
+			id="add_goal_form"
 			method="post"
-			action="{% url 'goals:addGoal' %}"
+			action="{% url 'goals:add_goal' %}"
 			enctype="multipart/form-data"
 			class="auto-form"
 		>
 			{% csrf_token %} 
-			{{ addGoal_form.as_p }} 
+			{{ add_goal_form.as_p }}
 			
 			<button
 				type="submit"
