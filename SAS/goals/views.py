@@ -22,10 +22,18 @@ def index(request):
                 goal = UserGoal.objects.get(pk=pk_name)
                 goal.completed = True
                 goal.save()
+                profile = UserProfile.objects.get(user=goal.user)
+                new_level, new_xp = increase_level(profile.level, profile.xp_level, 1)
+                print(new_level, new_xp)
+                profile.level = new_level
+                profile.xp_level = new_xp
+                profile.save()
 
     try:
-        context_dict['profile'] = UserProfile.objects.get(user=request.user)
+        profile = UserProfile.objects.get(user=request.user)
+        context_dict['profile'] = profile
         context_dict['goals'] = UserGoal.objects.filter(user=request.user).order_by('date')
+        context_dict['xp_to_next_level'] = xp_to_next(profile.level)
     except:
         context_dict['profile'] = None
 
@@ -110,6 +118,22 @@ def attempt_login(request, username, password):
 
     return False
 
+
+
+def xp_to_next(level):
+    return level * 2
+
+
+def increase_level(level, xp, add_xp=0):
+    thresh = xp_to_next(level)
+    total_xp = xp + add_xp
+    if total_xp > thresh:
+        return increase_level(level + 1, total_xp - thresh)
+    elif total_xp == thresh:
+        return level + 1, 0
+
+    return level, total_xp
+  
 def statistics(request):
     return HttpResponse("Stats page is under development")
 

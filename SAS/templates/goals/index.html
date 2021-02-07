@@ -10,7 +10,7 @@
     {% if user.is_authenticated %}
         <h2 class="font-bold text-3xl py-4">Welcome {{ user.username }}!</h2>
         <p><strong>Inspirational quote:</strong> {{ quote_dict.quote }} {{ quote_dict.author }}</p>
-        <p>Hello there {{ user.username }}, you are currently at level {{ profile.xpLevel }}!</p>
+        <p>Hello there {{ user.username }}, you are currently at level {{ profile.level }}!</p>
         <img src="{{ MEDIA_URL }}{{ profile.picture.name }}" width="300" height="500" alt="Profile picture"/>
         <form id="goals_form" method="post" action="{% url 'goals:index' %}">
             {% csrf_token %}
@@ -25,6 +25,7 @@
                 {% endfor %}
             </ul>
         </form>
+        <meter id="xp_progress" value="{{ profile.xp_level }}" min="0" max="{{ xp_to_next_level }}">{{ profile.xp_level }}</meter>
     {% else %}
         <h1>Achieve Your Goals!</h1>
         <p>This is a website to help you achieve your lockdown goals.</p>
