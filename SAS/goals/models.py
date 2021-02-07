@@ -16,3 +16,4 @@ class UserGoal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False)
     date = models.DateField()
     description = models.CharField(max_length=128)
+    completed = models.BooleanField(default=False)

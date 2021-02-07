@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from goals.forms import UserForm, UserProfileForm, GoalForm
-from goals.models import UserProfile
+from goals.models import UserProfile, UserGoal
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -12,9 +12,18 @@ from .inspirationalQuotes import quotes
 def index(request):
     random_quote = random.choice(quotes)
     context_dict = {'quote_dict': random_quote, }
+    if request.method == 'POST':
+        post = request.POST.dict()
+        for key in post.keys():
+            if key.startswith("checkbox:"):
+                pk_name = key.replace("checkbox:", "")
+                goal = UserGoal.objects.get(pk=pk_name)
+                goal.completed = True
+                goal.save()
 
     try:
         context_dict['profile'] = UserProfile.objects.get(user=request.user)
+        context_dict['goals'] = UserGoal.objects.filter(user=request.user).order_by('date')
     except:
         context_dict['profile'] = None
 
