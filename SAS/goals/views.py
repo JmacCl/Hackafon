@@ -9,7 +9,6 @@ import random
 from .inspirationalQuotes import quotes
 
 
-# Create your views here.
 def index(request):
     random_quote = random.choice(quotes)
     context_dict = {'quote_dict': random_quote, }
@@ -31,6 +30,7 @@ def register(request):
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
+            plain_text_password = user.password
             user.set_password(user.password)
             user.save()
 
@@ -41,8 +41,10 @@ def register(request):
                 profile.picture = request.FILES['picture']
 
             profile.save()
-            registered = True
 
+            if not attempt_login(request, user.username, plain_text_password):
+                print("failed to login")
+            registered = True
         else:
             print(user_form.errors, profile_form.errors)
     else:
@@ -57,16 +59,9 @@ def user_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                return redirect(reverse('goals:index'))
-            else:
-                return HttpResponse("Invalid login details supplied.")
+        if attempt_login(request, username, password):
+            return redirect(reverse('goals:index'))
         else:
-            print('invalid')
             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'goals/login.html')
@@ -78,16 +73,26 @@ def user_logout(request):
     return redirect(reverse('goals:index'))
 
 
-def addGoal(request):
+def add_goal(request):
     if request.method == 'POST':
-        addGoal_form = GoalForm(request.POST)
-        if addGoal_form.is_valid():
-            goal = addGoal_form.save(commit=False)
+        add_goal_form = GoalForm(request.POST)
+        if add_goal_form.is_valid():
+            goal = add_goal_form.save(commit=False)
             goal.user = request.user
             goal.save()
         else:
             return HttpResponse("Missing Information")
     else:
-        addGoal_form = GoalForm()
+        add_goal_form = GoalForm()
 
-    return render(request, 'goals/addGoal.html', context={'addGoal_form': addGoal_form})
+    return render(request, 'goals/addGoal.html', context={'addGoal_form': add_goal_form})
+
+
+def attempt_login(request, username, password):
+    print(username, password)
+    user_auth = authenticate(username=username, password=password)
+    if user_auth and user_auth.is_active:
+        login(request, user_auth)
+        return True
+
+    return False
